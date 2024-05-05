@@ -13,25 +13,35 @@ def password_valid(password_val):
     return len(password_val) >= 8 and bool(re.search(r'[A-Z]', password_val)) and bool(re.search(r'\d', password_val))
 
 
+def validation_register(first_name,surname,password,confirm_password):
+    errors = []
+
+    if len([password]) < 8:
+        errors.append("Password must be 8 characters")
+    elif not password_valid(password):
+        errors.append("Password must contain numbers and letters")
+    elif not first_name and surname:
+        errors.append("Registration error. Please ensure  in all the fields are filled in")
+
+    if password != confirm_password:
+        errors.append("Passwords do not match")
+
+    return errors
+
+
 st.title("Registration page")
+
 
 first_name = st.text_input("First Name")
 surname = st.text_input("Surname")
 password = st.text_input("Password", type="password")
 confirm_password = st.text_input("Confirm Password", type="password")
 
-if password and not password_valid(password):
-    st.error("Password must be at least 8 characters long and contain at least 1 uppercase letter and 1 number.")
-
 if st.button("Register"):
-    if first_name and surname:
-        if password == confirm_password:
-            username = generate_username(first_name, surname)
-            st.success("Registration successful!")
-            st.write("Your Username is:", username)
-        else:
-            st.error("Passwords do not match")
+    password_valid = validation_register(first_name,surname,password,confirm_password)
+    if not password_valid:
+        st.success("Registration successful")
     else:
-        st.error("Registration failed. Please ensure all fields are filled correctly.")
-
+        for item in password_valid:
+            st.error(item)
 
