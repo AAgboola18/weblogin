@@ -3,16 +3,18 @@ import random
 import re
 
 
+# function to generate the unique username
 def generate_username(first_name, surname):
     first_letter = first_name[0].upper()
     username = first_letter + surname.lower() + str(random.randint(1, 99))
     return username
 
-
+# Function to validate the password
 def password_valid(password_val):
     return len(password_val) >= 8 and bool(re.search(r'[A-Z]', password_val)) and bool(re.search(r'\d', password_val))
 
 
+# Allows the errors to be printed at the button of the screen in a list
 def validation_register(first_name,surname,password,confirm_password):
     errors = []
 
@@ -29,6 +31,7 @@ def validation_register(first_name,surname,password,confirm_password):
     return errors
 
 
+# Title of login page
 st.title("Registration page")
 
 
@@ -38,7 +41,8 @@ password = st.text_input("Password", type="password")
 confirm_password = st.text_input("Confirm Password", type="password")
 
 if st.button("Register"):
-    password_valid = validation_register(first_name,surname,password,confirm_password)
+    password_valid = validation_register(first_name, surname, password, confirm_password)
+
     if not password_valid:
         st.success("Registration successful")
     else:
